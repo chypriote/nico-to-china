@@ -1,51 +1,105 @@
 const {getJson} = require("serpapi");
-const {
-  format,
-  addWeeks,
-  addMonths,
-  addDays,
-  getDay,
-  nextMonday,
-  nextWednesday,
-  nextThursday,
-  nextSaturday
-} = require("date-fns");
+const { format, getDay, addDays } = require("date-fns");
 const {getFreshFlightSearch, insertFlightSearch} = require("./db");
 
 const formatDate = date => format(date, 'yyyy-MM-dd')
 
 const requestObject = {
   engine: "google_flights",
-  api_key: "3ea3501d604d46761905f006fe739d568f56183c07d6a63d0d59c886adfd54db",
+  // api_key: "3ea3501d604d46761905f006fe739d568f56183c07d6a63d0d59c886adfd54db", //nicolastem sfr
+  api_key: "58cdc8e07a48dbb7cb05b6133c8f827952712f5c7ea28f4961dc098ee4a6b3f9", //kroxigor05 free
   currency: "EUR",
   departure_id: "CDG, ORY",
   type: "1",
   sort_by: "2",
+  max_duration: 1260,
   deep_search: true
 }
+const CACHE_MAX_AGE_DAYS = 3
 
-const airports = [
-  "TFU", // Chengdu Lundi
-  "CAN", // Guangzhou Lundi Jeudi
-  "NKG", // Nanjing Mercredi
-  "XMN", // Xiamen Jeudi
-  "XIY", // Xian Jeudi
-  "CKG", // Chongqing Samedi
-  "PVG", // Shanghai Pudong all
-  "PEK", // Beijing Capital all
-  "PKX", // Beijing Daxing all
+/**
+ * Airports - code - direct flights day:
+ * Chengdu - TFU - Lundi
+ * Guangzhou - CAN - Lundi Jeudi
+ * Nanjing - NKG - Mercredi
+ * Xiamen - XMN - Jeudi
+ * Xian - XIY - Jeudi
+ * Chongqing - CKG - Samedi
+ * Shanghai Pudong - PVG - all
+ * Beijing Capital - PEK - all
+ * Beijing Daxing - PKX - none
+ * Hangzhou - HGH - none
+ * Nanchang - KHN - none
+ * Kunming - KMG - none
+ * Wuhan - WUH - none
+ * Urumqi - URC - none
+ * Nanjing - NKG - none
+ * Changsha - CSX - none
+ * Guilin - KWL - none
+ * Lhasa - LXA - none
+ *
+ * Trips:
+ * Southwest - Mars-Mai/Sept-Nov - Chengdu, Chongqing, Guilin, Kunming
+ * SG&co - Avril-Mai/Oct-Nov - Shanghai, Nanjing, Hangzhou
+ * Center - Mars-Mai/Sept-Nov - Changsha, Wuhan, Nanchang
+ * Xinjiang - Mai-Oct - Urumqi
+ * Xizang - Avril-Juin/Sept-Oct - Lhasa
+ * East coast - Mars-Avril/Nov-Dec - Guangzhou, Xiamen
+ *
+ * Dates to avoid:
+ * First week of May
+ * First week of October
+ * Month of July
+ */
+const dateRanges = [
+  ["2026-11-06", "2026-11-21", ["CSX", "WUH", "KHN", "CAN", "XMN"]],
+  ["2027-02-06", "2027-02-20", ["CSX", "WUH", "KHN"]],
+  ["2027-02-13", "2027-02-27", ["CSX", "WUH", "KHN"]],
+  ["2027-02-20", "2027-03-05", ["CSX", "WUH", "KHN"]],
+  ["2027-03-12", "2027-03-26", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
+  ["2027-03-19", "2027-04-03", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
+  ["2027-03-26", "2027-04-10", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
+  ["2027-04-02", "2027-04-17", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN"]],
+  ["2027-04-09", "2027-04-24", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN"]],
+  ["2027-04-16", "2027-05-01", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN"]],
+  //Skipping first may week
+  ["2027-05-07", "2027-05-21", ["TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
+  ["2027-05-07", "2027-05-28", ["LXA"]], //3 weeks
+  ["2027-05-14", "2027-05-28", ["TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
+  ["2027-05-14", "2027-06-05", ["LXA"]], //3 weeks
+  ["2027-05-21", "2027-06-05", ["TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
+  ["2027-05-21", "2027-06-12", ["LXA"]], //3 weeks
+  ["2027-05-28", "2027-06-12", ["PVG", "HGH", "NKG"]],
+  ["2027-06-04", "2027-06-19", ["PVG", "HGH", "NKG"]],
+  ["2027-06-04", "2027-06-26", ["LXA"]], //3 weeks
+  ["2027-06-11", "2027-06-26", ["PVG", "HGH", "NKG"]],
+  ["2027-06-11", "2027-07-03", ["LXA"]], //3 weeks
+  ["2027-06-18", "2027-07-03", []],
+  ["2027-06-25", "2027-07-10", []],
+  ["2027-07-02", "2027-07-17", []],
+  ["2027-07-02", "2027-07-24", ["URC"]], //3 weeks
+  ["2027-07-09", "2027-07-24", []],
+  ["2027-07-09", "2027-07-31", ["URC"]], //3 weeks
+  ["2027-07-16", "2027-07-31", []],
+  ["2027-07-16", "2027-08-07", ["URC"]], //3 weeks
+  ["2027-07-23", "2027-08-07", []],
+  ["2027-07-30", "2027-08-14", []],
+  ["2027-08-06", "2027-08-21", []],
+  ["2027-08-06", "2027-08-28", []],
+  ["2027-08-13", "2027-08-28", []],
+  ["2027-08-13", "2027-09-04", ["URC"]], //3 weeks
+  ["2027-08-20", "2027-09-04", []],
+  ["2027-08-20", "2027-09-11", ["URC"]], //3 weeks
+  ["2027-08-27", "2027-09-11", []],
+  ["2027-08-27", "2027-09-18", ["URC", "LXA"]], //3 weeks
+  ["2027-09-03", "2027-09-18", ["CSX", "WUH", "KHN","TFU", "KMG", "CKG", "KWL"]],
+  ["2027-09-03", "2027-09-25", ["URC", "LXA"]], //3 weeks
+  ["2027-09-10", "2027-09-25", ["CSX", "WUH", "KHN","TFU", "KMG", "CKG", "KWL"]],
+  ["2027-09-10", "2027-10-01", ["URC", "LXA"]], //3 weeks
+  ["2027-10-29", "2027-11-13", ["CSX", "WUH", "KHN","TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
 ]
 
-const ONE_STOP_AIRPORTS = new Set(["PEK", "PKX", "CAN", "PVG"])
-
-function getStopsOptions(airport) {
-  if (airport === "PKX") {
-    return ["2"]
-  }
-  return ONE_STOP_AIRPORTS.has(airport) ? ["1", "2"] : ["1"]
-}
-
-const CACHE_MAX_AGE_DAYS = 3
+const DIRECT_AIRPORTS = new Set(["TFU", "CAN", "NKG", "XMN", "XIY", "CKG", "PVG", "PEK"])
 
 async function getFlights(airport, start, end, stopsParam) {
   const stops = stopsParam === "2" ? "stop" : "nostop"
@@ -70,7 +124,7 @@ async function getFlights(airport, start, end, stopsParam) {
     return json
   }
 
-  insertFlightSearch(airport, stops, outboundDate, returnDate, json, searchedOn)
+  await insertFlightSearch(airport, stops, json.other_flights[0].price, outboundDate, returnDate, json, searchedOn)
   return json
 }
 
@@ -90,7 +144,6 @@ function isAirportAvailable(airport, date) {
       return day === 6 // Saturday
     case "PVG":
     case "PEK":
-    case "PKX":
       return true // all days
     default:
       return false
@@ -98,31 +151,36 @@ function isAirportAvailable(airport, date) {
 }
 
 async function run() {
-  const startRange = addMonths(new Date(), 6)
-  const endRange = addWeeks(startRange, 1)
-
-  let current = startRange
-  while (current <= endRange) {
+  let searches = 0
+  const maxSearchDate = addDays(new Date(), 325)
+  for (const [startDate, endDate, airports] of dateRanges) {
     for (const airport of airports) {
-      if (!isAirportAvailable(airport, current)) {
-        continue
-      }
-      const start = current
-      const end = addWeeks(start, 2)
+      const start = new Date(startDate)
+      const end = new Date(endDate)
 
-      for (const stopsParam of getStopsOptions(airport)) {
+      if (start > maxSearchDate) {
+        break
+      }
+
+      const stopsOptions = ["2"]
+      if (DIRECT_AIRPORTS.has(airport) && isAirportAvailable(airport, start)) {
+        stopsOptions.push("1")
+      }
+
+      for (const stopsParam of stopsOptions) {
+        searches++
         const json = await getFlights(airport, start, end, stopsParam)
         if (!json.hasOwnProperty("other_flights")) {
-          console.log(`${airport} no result`)
+          console.log(`${airport} ${startDate} no result`)
           continue
         }
 
-        const stopLabel = stopsParam === "2" ? " (1 stop)" : ""
+        const stopLabel = stopsParam === "2" ? " (1 stop)" : " (nostop)"
         console.log(`${airport}${stopLabel} ${formatDate(start)} to ${formatDate(end)}: ${json["other_flights"][0]["price"]}€`)
       }
     }
-    current = addDays(current, 1)
   }
+  console.log(`searched ${searches} flights`)
 }
 
 const result = async () => {

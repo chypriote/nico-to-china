@@ -3,7 +3,8 @@
   "packageManager": "yarn@4.12.0",
   "scripts": {
     "start": "node flights",
-    "china": "node china"
+    "china": "node china",
+    "build": "node build"
   },
   "dependencies": {
     "@types/node": "^25.9.1",

@@ -57,18 +57,18 @@ const dateRanges = [
   ["2027-02-06", "2027-02-20", ["CSX", "WUH", "KHN"]],
   ["2027-02-13", "2027-02-27", ["CSX", "WUH", "KHN"]],
   ["2027-02-20", "2027-03-05", ["CSX", "WUH", "KHN"]],
-  ["2027-03-12", "2027-03-26", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
-  ["2027-03-19", "2027-04-03", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
-  ["2027-03-26", "2027-04-10", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
-  ["2027-04-02", "2027-04-17", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN"]],
-  ["2027-04-09", "2027-04-24", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN"]],
-  ["2027-04-16", "2027-05-01", ["CSX", "WUH", "KHN", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN"]],
+  ["2027-03-12", "2027-03-26", ["CSX", "WUH", "KHN", "XIY", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
+  ["2027-03-19", "2027-04-03", ["CSX", "WUH", "KHN", "XIY", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
+  ["2027-03-26", "2027-04-10", ["CSX", "WUH", "KHN", "XIY", "TFU", "KMG", "CKG", "KWL", "CAN", "XMN"]],
+  ["2027-04-02", "2027-04-17", ["CSX", "WUH", "KHN", "XIY", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN"]],
+  ["2027-04-09", "2027-04-24", ["CSX", "WUH", "KHN", "XIY", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN", "PEK", "PKX"]],
+  ["2027-04-16", "2027-05-01", ["CSX", "WUH", "KHN", "XIY", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "CAN", "XMN", "PEK", "PKX"]],
   //Skipping first may week
-  ["2027-05-07", "2027-05-21", ["TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
+  ["2027-05-07", "2027-05-21", ["XIY", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "PEK", "PKX"]],
   ["2027-05-07", "2027-05-28", ["LXA"]], //3 weeks
-  ["2027-05-14", "2027-05-28", ["TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
+  ["2027-05-14", "2027-05-28", ["XIY", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "PEK", "PKX"]],
   ["2027-05-14", "2027-06-05", ["LXA"]], //3 weeks
-  ["2027-05-21", "2027-06-05", ["TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
+  ["2027-05-21", "2027-06-05", ["XIY", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
   ["2027-05-21", "2027-06-12", ["LXA"]], //3 weeks
   ["2027-05-28", "2027-06-12", ["PVG", "HGH", "NKG"]],
   ["2027-06-04", "2027-06-19", ["PVG", "HGH", "NKG"]],
@@ -91,16 +91,16 @@ const dateRanges = [
   ["2027-08-13", "2027-09-04", ["URC"]], //3 weeks
   ["2027-08-20", "2027-09-04", []],
   ["2027-08-20", "2027-09-11", ["URC"]], //3 weeks
-  ["2027-08-27", "2027-09-11", []],
+  ["2027-08-27", "2027-09-11", ["PEK", "PKX"]],
   ["2027-08-27", "2027-09-18", ["URC", "LXA"]], //3 weeks
-  ["2027-09-03", "2027-09-18", ["CSX", "WUH", "KHN","TFU", "KMG", "CKG", "KWL"]],
+  ["2027-09-03", "2027-09-18", ["CSX", "WUH", "KHN","XIY", "TFU", "KMG", "CKG", "KWL", "PEK", "PKX"]],
   ["2027-09-03", "2027-09-25", ["URC", "LXA"]], //3 weeks
-  ["2027-09-10", "2027-09-25", ["CSX", "WUH", "KHN","TFU", "KMG", "CKG", "KWL"]],
+  ["2027-09-10", "2027-09-25", ["CSX", "WUH", "KHN","XIY", "TFU", "KMG", "CKG", "KWL", "PEK", "PKX"]],
   ["2027-09-10", "2027-10-01", ["URC", "LXA"]], //3 weeks
-  ["2027-10-29", "2027-11-13", ["CSX", "WUH", "KHN","TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG"]],
+  ["2027-10-29", "2027-11-13", ["CSX", "WUH", "KHN","XIY", "TFU", "KMG", "CKG", "KWL", "PVG", "HGH", "NKG", "PEK", "PKX"]],
 ]
 
-const DIRECT_AIRPORTS = new Set(["TFU", "CAN", "NKG", "XMN", "XIY", "CKG", "PVG", "PEK"])
+const DIRECT_AIRPORTS = new Set(["XIY", "TFU", "CAN", "NKG", "XMN", "XIY", "CKG", "PVG", "PEK"])
 
 async function getFlights(airport, start, end, stopsParam) {
   const stops = stopsParam === "2" ? "stop" : "nostop"
@@ -163,7 +163,7 @@ async function run() {
         break
       }
 
-      const stopsOptions = ["2"]
+      const stopsOptions = airport === "URC" || airport === "LXA" ? ["3"] : ["2"]
       if (DIRECT_AIRPORTS.has(airport) && isAirportAvailable(airport, start)) {
         stopsOptions.push("1")
       }

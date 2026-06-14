@@ -396,11 +396,20 @@ h1 {
   border-bottom: 1px solid color-mix(in oklab, var(--color-text) 7%, transparent);
   content-visibility: auto;
   min-height: 3.25rem;
+  position: relative;
 }
 
 .search-card:last-child { border-bottom: 0; }
 .search-card:hover {
   background: color-mix(in oklab, var(--color-primary) 4%, var(--color-surface-2));
+}
+
+/* Cheapest result for each airport gets a slight yellow background. */
+.search-card.airport-lowest {
+  background: color-mix(in oklab, gold 12%, var(--color-surface-2));
+}
+.search-card.airport-lowest:hover {
+  background: color-mix(in oklab, gold 18%, var(--color-surface-2));
 }
 
 .search-line {
@@ -428,8 +437,7 @@ h1 {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-.stops-inline,
-.searched-inline {
+.stops-inline {
   flex: 0 0 auto;
   color: var(--color-text-muted);
   font-size: var(--text-xs);
@@ -437,10 +445,22 @@ h1 {
   display: inline-flex;
   align-items: center;
   padding: 0 0.7rem;
-  border-radius: var(--radius-full);
-  background: color-mix(in oklab, var(--color-surface-offset) 90%, transparent);
-  border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+  /*border-radius: var(--radius-full);*/
+  /*background: color-mix(in oklab, var(--color-surface-offset) 90%, transparent);*/
+  /*border: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);*/
   white-space: nowrap;
+}
+
+.searched-floating {
+  position: absolute;
+  left: var(--space-5);
+  bottom: 0.3rem;
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+  line-height: 1;
+  opacity: 0.7;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .price-inline {
@@ -491,7 +511,7 @@ h1 {
     grid-template-columns: 1fr;
   }
 
-  .searched-inline {
+  .searched-floating {
     display: none;
   }
 }

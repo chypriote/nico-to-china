@@ -7,11 +7,8 @@
     "build": "node build"
   },
   "dependencies": {
-    "@types/node": "^25.9.1",
     "better-sqlite3": "^12.10.0",
     "date-fns": "^4.1.0",
-    "serpapi": "^2.2.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "serpapi": "^2.2.1"
   }
 }

@@ -10,11 +10,34 @@ const { getRecentSearches } = require('./db');
 
 const HTML_PATH = path.join(__dirname, 'index.html');
 
+// Airport code → city name. Falls back to the raw code for anything unmapped.
+const CITY_NAMES = {
+  TFU: 'Chengdu',
+  CAN: 'Guangzhou',
+  NKG: 'Nanjing',
+  XMN: 'Xiamen',
+  XIY: 'Xian',
+  CKG: 'Chongqing',
+  PVG: 'Shanghai Pudong',
+  PEK: 'Beijing Capital',
+  PKX: 'Beijing Daxing',
+  HGH: 'Hangzhou',
+  KHN: 'Nanchang',
+  KMG: 'Kunming',
+  WUH: 'Wuhan',
+  URC: 'Urumqi',
+  CSX: 'Changsha',
+  KWL: 'Guilin',
+  LXA: 'Lhasa',
+};
+
+const cityName = (code) => CITY_NAMES[code] || code;
+
 // --- formatting (kept in sync with index.js so static === live render) ---
 
-const formatCurrency = (value) => new Intl.NumberFormat('en-US', {
+const formatCurrency = (value) => new Intl.NumberFormat('fr-FR', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'EUR',
   maximumFractionDigits: 0,
 }).format(value);
 
@@ -61,17 +84,20 @@ function getPriceColor(price, minPrice, maxPrice) {
   return `oklch(${lightness} ${chroma} ${hue})`;
 }
 
-function renderCard(item, minPrice, maxPrice) {
+function renderCard(item, minPrice, maxPrice, isAirportLowest) {
   const price = Number.isFinite(item.price) ? formatCurrency(item.price) : '—';
-  const label = `${esc(item.airport)} from ${formatLongDate(item.outbound_date)} to ${formatLongDate(item.return_date)} costs ${price}`;
-  return `        <article class="search-card" aria-label="${label}">
+  const city = cityName(item.airport);
+  const label = `${esc(city)} from ${formatLongDate(item.outbound_date)} to ${formatLongDate(item.return_date)} costs ${price}`;
+  const cardClass = isAirportLowest ? 'search-card airport-lowest' : 'search-card';
+  const stops = item.stops === 'nostop' ? `<span class="stops-inline" title="Direct">✈️</span>` : '';
+  return `        <article class="${cardClass}" aria-label="${label}">
           <div class="search-line">
-            <span class="airport-code">${esc(item.airport)}</span>
+            <span class="airport-code">${esc(city)}</span>
             <span class="dates-inline">${formatShortDate(item.outbound_date)} → ${formatShortDate(item.return_date)}</span>
-            <span class="stops-inline">${esc(item.stops)}</span>
-            <span class="searched-inline">${formatShortDate(item.searched_on)}</span>
+            ${stops}
           </div>
           <div class="price-inline" style="--price-color: ${getPriceColor(item.price, minPrice, maxPrice)}">${price}</div>
+          <span class="searched-floating">${formatShortDate(item.searched_on)}</span>
         </article>`;
 }
 
@@ -88,7 +114,19 @@ function buildListMarkup(rows) {
   const prices = rows.map((item) => item.price).filter((price) => Number.isFinite(price));
   const minPrice = prices.length ? Math.min(...prices) : 0;
   const maxPrice = prices.length ? Math.max(...prices) : 0;
-  return rows.map((item) => renderCard(item, minPrice, maxPrice)).join('\n');
+
+  // Cheapest finite-priced row per airport — rows are already sorted
+  // cheapest-first, so the first one seen for an airport is its lowest.
+  const lowestByAirport = new Map();
+  rows.forEach((item) => {
+    if (Number.isFinite(item.price) && !lowestByAirport.has(item.airport)) {
+      lowestByAirport.set(item.airport, item);
+    }
+  });
+
+  return rows
+    .map((item) => renderCard(item, minPrice, maxPrice, lowestByAirport.get(item.airport) === item))
+    .join('\n');
 }
 
 function injectBetween(html, openTag, closeMarker, inner) {

@@ -18,3 +18,4 @@ node_modules
 
 flights.db
 .idea
+.env

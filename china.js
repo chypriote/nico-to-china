@@ -2,12 +2,13 @@ const {getJson} = require("serpapi");
 const { format, getDay, addDays } = require("date-fns");
 const {getFreshFlightSearch, insertFlightSearch} = require("./db");
 
+process.loadEnvFile();
+
 const formatDate = date => format(date, 'yyyy-MM-dd')
 
 const requestObject = {
   engine: "google_flights",
-  // api_key: "3ea3501d604d46761905f006fe739d568f56183c07d6a63d0d59c886adfd54db", //nicolastem sfr
-  api_key: "58cdc8e07a48dbb7cb05b6133c8f827952712f5c7ea28f4961dc098ee4a6b3f9", //kroxigor05 free
+  api_key: process.env.API_KEY,
   currency: "EUR",
   departure_id: "CDG, ORY",
   type: "1",

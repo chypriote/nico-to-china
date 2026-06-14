@@ -421,8 +421,11 @@ h1 {
   white-space: nowrap;
 }
 
-.airport-code {
-  flex: 0 0 auto;
+.airport {
+  flex: 0 1 auto;
+  min-width: 15%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -540,9 +543,13 @@ h1 {
   .search-card {
     padding-inline: var(--space-4);
   }
+  .airport {
+    min-width: 0;
+  }
 
   .search-card {
-    gap: var(--space-3);
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-2);
   }
 
   .stops-inline {

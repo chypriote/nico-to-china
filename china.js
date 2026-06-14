@@ -1,4 +1,4 @@
-const {getJson} = require("serpapi");
+const { getJson } = require("serpapi");
 const { format, getDay, addDays } = require("date-fns");
 const {getFreshFlightSearch, insertFlightSearch} = require("./db");
 
@@ -17,6 +17,7 @@ const requestObject = {
   deep_search: true
 }
 const CACHE_MAX_AGE_DAYS = 3
+const MAX_SEARCH_DAYS = 305
 
 /**
  * Airports - code - direct flights day:
@@ -34,7 +35,6 @@ const CACHE_MAX_AGE_DAYS = 3
  * Kunming - KMG - none
  * Wuhan - WUH - none
  * Urumqi - URC - none
- * Nanjing - NKG - none
  * Changsha - CSX - none
  * Guilin - KWL - none
  * Lhasa - LXA - none
@@ -102,13 +102,13 @@ const dateRanges = [
 
 const DIRECT_AIRPORTS = new Set(["XIY", "TFU", "CAN", "NKG", "XMN", "XIY", "CKG", "PVG", "PEK"])
 
-async function getFlights(airport, start, end, stopsParam) {
-  const stops = stopsParam === "2" ? "stop" : "nostop"
+async function getFlights(airport, start, end, stops) {
+  const stopsValue = stops === "2" ? "stop" : "nostop"
   const outboundDate = formatDate(start)
   const returnDate = formatDate(end)
   const searchedOn = formatDate(new Date())
 
-  const cached = getFreshFlightSearch(airport, stops, outboundDate, returnDate, CACHE_MAX_AGE_DAYS)
+  const cached = getFreshFlightSearch(airport, stopsValue, outboundDate, returnDate, CACHE_MAX_AGE_DAYS)
   if (cached) {
     return cached
   }
@@ -118,14 +118,14 @@ async function getFlights(airport, start, end, stopsParam) {
     outbound_date: outboundDate,
     return_date: returnDate,
     ...requestObject,
-    stops: stopsParam,
+    stops: stops,
   })
 
   if (!json.hasOwnProperty("other_flights")) {
     return json
   }
 
-  await insertFlightSearch(airport, stops, json.other_flights[0].price, outboundDate, returnDate, json, searchedOn)
+  await insertFlightSearch(airport, stopsValue, json.other_flights[0].price, outboundDate, returnDate, json, searchedOn)
   return json
 }
 
@@ -151,9 +151,34 @@ function isAirportAvailable(airport, date) {
   }
 }
 
+async function findWeeklyDirectFlights(date) {
+  const current = new Date(date)
+  const day = getDay(current)
+  const mondayOffset = day === 0 ? -6 : 1 - day
+  const weekStart = addDays(current, mondayOffset)
+  const weekEnd = addDays(weekStart, 6)
+
+  const maxSearchDate = addDays(new Date(), MAX_SEARCH_DAYS)
+  for (let d = new Date(weekStart); d <= weekEnd; d = addDays(d, 1)) {
+    for (const airport of DIRECT_AIRPORTS) {
+      if (d > maxSearchDate) break
+      if (airport === "PVG" || airport === "PEK") continue
+      if (!isAirportAvailable(airport, d)) continue
+
+      const json = await getFlights(airport, d, addDays(d, 14), "1")
+      if (!json.hasOwnProperty("other_flights")) {
+        console.log(`${airport} ${formatDate(d)} no result`)
+        continue
+      }
+
+      console.log(`${airport} (direct) ${formatDate(d)}: ${json["other_flights"][0]["price"]}€`)
+    }
+  }
+}
+
 async function run() {
   let searches = 0
-  const maxSearchDate = addDays(new Date(), 325)
+  const maxSearchDate = addDays(new Date(), MAX_SEARCH_DAYS)
   for (const [startDate, endDate, airports] of dateRanges) {
     for (const airport of airports) {
       const start = new Date(startDate)
@@ -180,6 +205,7 @@ async function run() {
         console.log(`${airport}${stopLabel} ${formatDate(start)} to ${formatDate(end)}: ${json["other_flights"][0]["price"]}€`)
       }
     }
+    await findWeeklyDirectFlights(startDate)
   }
   console.log(`searched ${searches} flights`)
 }

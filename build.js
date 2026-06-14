@@ -7,9 +7,11 @@
 const fs = require('fs');
 const path = require('path');
 const { getRecentSearches } = require('./db');
+const {nextSunday, addDays, nextMonday, startOfToday, getDate, previousMonday, isMonday, isSunday} = require("date-fns");
 
 const HTML_PATH = path.join(__dirname, 'index.html');
 const CALENDAR_HTML_PATH = path.join(__dirname, 'calendar.html');
+const MAX_SEARCH_DAYS = 306
 
 // Airport code → city name. Falls back to the raw code for anything unmapped.
 const CITY_NAMES = {
@@ -142,20 +144,14 @@ const pad2 = (value) => String(value).padStart(2, '0');
 const isoDate = (date) => `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
 
 // Calendar window — the constants the page used to render with client-side.
-const CALENDAR_TODAY = new Date();
-const CALENDAR_START = new Date('2026-11-02T12:00:00');
-const CALENDAR_END = (() => {
-  const end = new Date(CALENDAR_TODAY);
-  end.setDate(end.getDate() + 325);
-  return end;
-})();
+const CALENDAR_TODAY = (() => { return startOfToday() })()
+const CALENDAR_START = (() => { return new Date('2026-11-02') })()
+const CALENDAR_END = (() => { return addDays(CALENDAR_TODAY, MAX_SEARCH_DAYS) })();
 
 // Whole Mon–Sun weeks covering [start, end] so the grid stays aligned.
 function buildCalendarDates(startDate, endDate) {
-  const first = new Date(startDate);
-  first.setDate(first.getDate() - ((first.getDay() + 6) % 7));
-  const last = new Date(endDate);
-  last.setDate(last.getDate() + (6 - ((last.getDay() + 6) % 7)));
+  const first = isMonday(startDate) ? startDate : previousMonday(isoDate(startDate))
+  const last = isSunday(endDate) ? endDate : nextSunday(isoDate(endDate))
 
   const dates = [];
   for (let cursor = new Date(first); cursor <= last; cursor.setDate(cursor.getDate() + 1)) {

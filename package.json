@@ -2,6 +2,7 @@
   "name": "flights",
   "packageManager": "yarn@4.12.0",
   "scripts": {
+    "search": "node search",
     "start": "node flights",
     "china": "node china",
     "build": "node build"

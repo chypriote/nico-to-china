@@ -92,7 +92,7 @@ function renderCard(item, minPrice, maxPrice, isAirportLowest) {
   const stops = item.stops === 'nostop' ? `<span class="stops-inline" title="Direct">✈️</span>` : '';
   return `        <article class="${cardClass}" aria-label="${label}">
           <div class="search-line">
-            <span class="airport">${esc(city)}</span>
+            <span class="airport" title="${item.airport}">${esc(city)}</span>
             <span class="dates-inline">${formatShortDate(item.outbound_date)} → ${formatShortDate(item.return_date)}</span>
             ${stops}
           </div>

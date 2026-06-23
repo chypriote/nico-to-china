@@ -3,7 +3,7 @@ const { getFlightSearch, insertFlightSearch } = require("./db");
 
 const requestObject = {
     engine: "google_flights",
-    api_key: "3ea3501d604d46761905f006fe739d568f56183c07d6a63d0d59c886adfd54db",
+  api_key: process.env.API_KEY,
     currency: "EUR",
     departure_id: "CDG, ORY",
     type: "1",

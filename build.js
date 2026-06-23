@@ -145,7 +145,7 @@ const isoDate = (date) => `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${
 
 // Calendar window — the constants the page used to render with client-side.
 const CALENDAR_TODAY = (() => { return startOfToday() })()
-const CALENDAR_START = (() => { return new Date('2026-11-02') })()
+const CALENDAR_START = (() => { return new Date('2027-01-01') })()
 const CALENDAR_END = (() => { return addDays(CALENDAR_TODAY, MAX_SEARCH_DAYS) })();
 
 // Whole Mon–Sun weeks covering [start, end] so the grid stays aligned.

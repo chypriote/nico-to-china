@@ -36,5 +36,6 @@ VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'));
 SELECT airport, stops, price, outbound_date, return_date, response, searched_on,
        MAX(created_at) AS created_at
 FROM flight_searches
+WHERE outbound_date > '2027-01-01'
 GROUP BY airport, outbound_date
 ORDER BY price;

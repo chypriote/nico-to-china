@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spring through Kyoto, Osaka, and Nara</title>
+  <link rel="stylesheet" href="index.css" />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand" aria-label="App brand">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path d="M8 29.5C18.5 29.5 27.5 26.5 40 18" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            <path d="M13 18L7 29.5L18.5 35" stroke="currentColor" stroke-width="4" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <circle cx="34" cy="15" r="4" fill="currentColor" />
+          </svg>
+          <span>Nico to 中国</span>
+        </div>
+        <div class="topbar-actions">
+          <a href="index.html" class="pill" aria-hidden="true">Home</a>
+          <a href="trips.html" class="pill" aria-hidden="true">Trips</a>
+          <a href="#days" class="pill trip-detail-jump">Days</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span class="sr-only">Toggle theme</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="content">
+      <section class="trip-detail-hero" aria-labelledby="trip-title">
+        <div class="trip-detail-hero-grid">
+          <article class="trip-panel trip-detail-intro">
+            <div>
+              <span class="eyebrow">Single trip page</span>
+              <h1 id="trip-title">Spring through Kyoto, Osaka, and Nara.</h1>
+              <p class="hero-copy">A standalone trip page with the same clean card-first language as the reference site:
+                simple surfaces, compact metadata, and a timeline that makes each day easy to scan.</p>
+            </div>
+            <div class="hero-stats" aria-label="Trip statistics">
+              <div class="stat">
+                <div class="stat-label">Dates</div>
+                <div class="stat-value">12 Apr → 18 Apr</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Days</div>
+                <div class="stat-value">7 days</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Photos</div>
+                <div class="stat-value">28 selected</div>
+              </div>
+            </div>
+          </article>
+          <aside class="trip-panel trip-detail-aside">
+            <section class="trip-summary-box">
+              <div class="trip-label">Stops</div>
+              <div class="trip-chips">
+                <span class="trip-chip">Kyoto</span>
+                <span class="trip-chip">Uji</span>
+                <span class="trip-chip">Nara</span>
+                <span class="trip-chip">Osaka</span>
+              </div>
+            </section>
+            <section class="trip-summary-box">
+              <div class="trip-label">Page structure</div>
+              <div class="trip-chips">
+                <span class="trip-chip">5-up photos</span>
+                <span class="trip-chip">Places visited</span>
+                <span class="trip-chip">Food log</span>
+                <span class="trip-chip">Trip notes</span>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="trip-panel trip-detail-days" id="days">
+        <div class="trip-section-title">
+          <div>
+            <h2>Daily timeline</h2>
+            <p class="list-caption">Photos are displayed in rows of five on desktop, closer to a gallery strip than large
+              editorial blocks.</p>
+          </div>
+        </div>
+
+        <div class="trip-detail-timeline">
+          <article class="trip-detail-day">
+            <div class="trip-detail-day-top">
+              <div class="trip-detail-day-label">
+                <span class="trip-day-num">Day 1</span>
+                <h3 class="trip-detail-day-title">Arrival in Kyoto</h3>
+                <p class="trip-day-date">Saturday, 12 Apr</p>
+              </div>
+              <span class="trip-detail-tag">Kyoto</span>
+            </div>
+            <div class="trip-detail-day-grid">
+              <div class="trip-detail-photo-grid">
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Kyoto alley at dusk" src="https://picsum.photos/seed/kyoto-alley/600/600"><span>Pontochō</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Lantern-lit ramen counter" src="https://picsum.photos/seed/ramen-counter/600/600"><span>Dinner</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Hotel room with city window view" src="https://picsum.photos/seed/kyoto-hotel/600/600"><span>Check-in</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Night walk near the river" src="https://picsum.photos/seed/kamo-river/600/600"><span>Walk</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Train platform in Kyoto" src="https://picsum.photos/seed/kyoto-platform/600/600"><span>Arrival</span>
+                </figure>
+              </div>
+              <div class="trip-detail-side">
+                <section class="trip-summary-box">
+                  <div class="trip-label">Places</div>
+                  <div class="trip-chips">
+                    <span class="trip-chip">Kansai Airport</span>
+                    <span class="trip-chip">Kyoto Station</span>
+                    <span class="trip-chip">Pontochō Alley</span>
+                    <span class="trip-chip">Kamo River</span>
+                  </div>
+                </section>
+                <section class="trip-summary-box">
+                  <div class="trip-label">Food eaten</div>
+                  <div class="trip-detail-food-list">
+                    <div class="trip-detail-food-item"><strong>Shoyu ramen</strong><span>Late dinner after
+                        arrival</span></div>
+                    <div class="trip-detail-food-item"><strong>Yuzu highball</strong><span>Riverside bar stop</span>
+                    </div>
+                    <div class="trip-detail-food-item"><strong>Dorayaki</strong><span>Hotel snack</span></div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="trip-detail-day">
+            <div class="trip-detail-day-top">
+              <div class="trip-detail-day-label">
+                <span class="trip-day-num">Day 2</span>
+                <h3 class="trip-detail-day-title">Eastern temples and old streets</h3>
+                <p class="trip-day-date">Sunday, 13 Apr</p>
+              </div>
+              <span class="trip-detail-tag">Kyoto</span>
+            </div>
+            <div class="trip-detail-day-grid">
+              <div class="trip-detail-photo-grid">
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600" alt="Temple gate in Kyoto"
+                    src="https://picsum.photos/seed/temple-gate/600/600"><span>Temple</span></figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Stone lane with wooden houses" src="https://picsum.photos/seed/ninenzaka/600/600"><span>Lane</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Matcha dessert on wooden tray" src="https://picsum.photos/seed/matcha-tray/600/600"><span>Tea</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Traditional street at golden hour" src="https://picsum.photos/seed/gion-golden/600/600"><span>Gion</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600" alt="Shrine path in Kyoto"
+                    src="https://picsum.photos/seed/yasaka-path/600/600"><span>Shrine</span></figure>
+              </div>
+              <div class="trip-detail-side">
+                <section class="trip-summary-box">
+                  <div class="trip-label">Places</div>
+                  <div class="trip-chips">
+                    <span class="trip-chip">Kiyomizu-dera</span>
+                    <span class="trip-chip">Sannenzaka</span>
+                    <span class="trip-chip">Ninenzaka</span>
+                    <span class="trip-chip">Yasaka Shrine</span>
+                    <span class="trip-chip">Gion</span>
+                  </div>
+                </section>
+                <section class="trip-summary-box">
+                  <div class="trip-label">Food eaten</div>
+                  <div class="trip-detail-food-list">
+                    <div class="trip-detail-food-item"><strong>Matcha parfait</strong><span>Midday stop near
+                        Higashiyama</span></div>
+                    <div class="trip-detail-food-item"><strong>Soba set</strong><span>Lunch after temple visit</span>
+                    </div>
+                    <div class="trip-detail-food-item"><strong>Kushikatsu</strong><span>Casual dinner in Gion</span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </article>
+
+          <article class="trip-detail-day">
+            <div class="trip-detail-day-top">
+              <div class="trip-detail-day-label">
+                <span class="trip-day-num">Day 3</span>
+                <h3 class="trip-detail-day-title">Uji and tea day</h3>
+                <p class="trip-day-date">Monday, 14 Apr</p>
+              </div>
+              <span class="trip-detail-tag">Uji</span>
+            </div>
+            <div class="trip-detail-day-grid">
+              <div class="trip-detail-photo-grid">
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600" alt="Riverbank in Uji"
+                    src="https://picsum.photos/seed/uji-river/600/600"><span>River</span></figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Traditional tea shop interior" src="https://picsum.photos/seed/tea-shop/600/600"><span>Tea
+                    shop</span></figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600" alt="Temple facade in Uji"
+                    src="https://picsum.photos/seed/byodoin/600/600"><span>Temple</span></figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600"
+                    alt="Green tea noodles on table" src="https://picsum.photos/seed/tea-noodles/600/600"><span>Lunch</span>
+                </figure>
+                <figure class="trip-detail-photo"><img loading="lazy" width="600" height="600" alt="Tea tins in a shop"
+                    src="https://picsum.photos/seed/tea-tins/600/600"><span>Shop</span></figure>
+              </div>
+              <div class="trip-detail-side">
+                <section class="trip-summary-box">
+                  <div class="trip-label">Places</div>
+                  <div class="trip-chips">
+                    <span class="trip-chip">Uji Station</span>
+                    <span class="trip-chip">Byōdō-in</span>
+                    <span class="trip-chip">Uji River promenade</span>
+                    <span class="trip-chip">Nakamura Tokichi</span>
+                  </div>
+                </section>
+                <section class="trip-summary-box">
+                  <div class="trip-label">Food eaten</div>
+                  <div class="trip-detail-food-list">
+                    <div class="trip-detail-food-item"><strong>Matcha soba</strong><span>Lunch specialty</span></div>
+                    <div class="trip-detail-food-item"><strong>Cold whisked matcha</strong><span>Tea tasting
+                        flight</span></div>
+                    <div class="trip-detail-food-item"><strong>Warabi mochi</strong><span>Afternoon snack</span></div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="trip-panel trip-detail-notes">
+        <div class="trip-section-title">
+          <div>
+            <h2>How to adapt it</h2>
+            <p class="list-caption">Keep five photos per row on desktop by adding images in groups of five, or let them wrap
+              naturally to the next line if a day has more.</p>
+          </div>
+        </div>
+        <p class="muted">The same structure still works well for data-driven rendering later, with each day holding a
+          compact photo array plus its places and food lists.</p>
+      </section>
+
+      <footer class="trip-detail-footer">
+        Built as a single static HTML file, ready to plug into a larger trip archive.
+      </footer>
+    </main>
+  </div>
+  <script src="index.js"></script>
+</body>
+
+</html>

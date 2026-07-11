@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flight Search - Calendar</title>
-  <link rel="stylesheet" href="/index.css" />
+  <link rel="stylesheet" href="index.css" />
   <link rel="preconnect" href="https://api.fontshare.com" />
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
 </head>
@@ -38,7 +38,7 @@
     </header>
 
     <main id="main-content" class="content">
-      <section class="calendar-shell" aria-labelledby="calendar-title">
+      <section class="calendar-shell" aria-label="Flight price calendar">
         <div class="weekday-row" aria-hidden="true">
           <div class="weekday-cell">Mon</div>
           <div class="weekday-cell">Tue</div>
@@ -2110,6 +2110,7 @@
           </div>
           <div class="price-list"><span class="empty-copy"></span></div>
         </article>
+      </div>
       </section> <!--calendar-grid-end-->
     </main>
   </div>
@@ -2118,24 +2119,3 @@
 </body>
 
 </html>
-
-<!--
-
-        <article class="${classes}" aria-label="${formatLongDate(date)} with ${entries.length} results">
-          <div class="day-top">
-            <div>
-              <div class="day-number">${String(date.getDate()).padStart(2, '0')}</div>
-              <div class="day-month">${monthLabel(date)}</div>
-            </div>
-            <div class="day-count">${entries.length ? `${entries.length} fares` : ''}</div>
-          </div>
-          <div class="price-list">
-            ${entries.length ? entries.map((item) => `
-            <div class="price-pill">
-              <span class="pill-route">${item.airport} · ${item.stops}</span>
-              <span class="pill-price" style="--price-color: ${getPriceColor(item.price, minPrice, maxPrice)}">${formatCurrency(item.price)}</span>
-            </div>
-            <span class="empty-copy">${isCurrentMonthRange ? 'No results' : ''}</span>
-          </div>
-        </article>
--->

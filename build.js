@@ -263,7 +263,7 @@ function main() {
   calendarHtml = injectBetween(
     calendarHtml,
     '<div id="calendar-grid" class="week-grid">',
-    '</section> <!--calendar-grid-end-->',
+    '</div>\n      </section> <!--calendar-grid-end-->',
     calendarInner
   );
   fs.writeFileSync(CALENDAR_HTML_PATH, calendarHtml);

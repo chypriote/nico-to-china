@@ -243,7 +243,7 @@ function main() {
   html = injectBetween(
     html,
     '<div class="search-list" id="search-list">',
-    '\n      </div>\n    </section>',
+    '</section> <!--search-list-end-->',
     listInner
   );
 
@@ -263,7 +263,7 @@ function main() {
   calendarHtml = injectBetween(
     calendarHtml,
     '<div id="calendar-grid" class="week-grid">',
-    '\n      </div>\n    </section>',
+    '</section> <!--calendar-grid-end-->',
     calendarInner
   );
   fs.writeFileSync(CALENDAR_HTML_PATH, calendarHtml);

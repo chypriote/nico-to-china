@@ -192,7 +192,7 @@ function renderCalendarCell(date, entries, minPrice, maxPrice) {
       const price = Number.isFinite(item.price) ? formatCurrency(item.price) : '—';
       return `
             <div class="price-pill">
-              <span class="pill-route">${item.airport}${item.stops === 'nostop' ? '✈️' : ''}</span>
+              <span class="pill-route" title="${cityName(item.airport)}">${item.airport}${item.stops === 'nostop' ? '✈️' : ''}</span>
               <span class="pill-price" style="--price-color: ${getPriceColor(item.price, minPrice, maxPrice)}">${price}</span>
             </div>`;
     }).join('')
